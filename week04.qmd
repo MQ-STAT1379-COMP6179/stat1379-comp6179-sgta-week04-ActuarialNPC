@@ -662,10 +662,14 @@ filter(babynames, name == Sea)
 ```{r fix-code-student, eval=FALSE}
 # Fixed code here:
 
-
+filter(babynames, name == "Sea")
 ```
 
 **Your explanation of what was wrong:**
+
+The first code should have ==
+
+second code should have t in ""
 
 ## Problem 2: Most Popular Names
 
@@ -674,10 +678,31 @@ Compare arranging by `prop` vs `n`.
 
 ```{r popular-names-student, eval=FALSE}
 # Your code to find highest proportion:
-
+babynames %>% 
+  select(sex,name,prop) %>% 
+  filter(sex=="M") %>% 
+  arrange(desc(prop)) %>% 
+  head(1)
+    
+babynames %>% 
+  select(sex,name,prop) %>% 
+  filter(sex=="F") %>% 
+  arrange(desc(prop)) %>% 
+  head(1)
+  
 
 # Your code to find highest count:
-
+babynames %>% 
+  select(sex,name,n) %>% 
+  filter(sex=="M") %>% 
+  arrange(desc(n)) %>% 
+  head(1)
+    
+babynames %>% 
+  select(sex,name,n) %>% 
+  filter(sex=="F") %>% 
+  arrange(desc(n)) %>% 
+  head(1)
 
 ```
 
@@ -694,7 +719,11 @@ Write a pipeline that will:
 
 ```{r girls-2017-student, eval=FALSE}
 # Your pipeline here:
-
+babynames %>% 
+  filter(sex=="F"& year== "2017") %>% 
+  select(name,n) %>% 
+  arrange(desc(n)) 
+  
 
 ```
 
@@ -774,11 +803,23 @@ cholesterol_data
 
 ```{r cholesterol-solution-student, eval=FALSE}
 # Task 1 - Convert to long format:
-
+yo <- cholesterol_data %>% 
+  pivot_longer(
+  cols = c(oat_bran_free,oat_bran),
+  names_to = "Diets",
+  values_to = "Cholesterol"
+)
 
 # Task 2 - Calculate summary statistics:
 
-
+yo %>% 
+  group_by(Diets) %>% 
+  summarise(
+    total = n(),
+    mean = mean(Cholesterol),
+    sd = sd(Cholesterol)) %>% 
+  ungroup()
+  
 ```
 
 **Your interpretation:** - Which diet appears to result in lower cholesterol?
